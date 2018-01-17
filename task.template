@@ -13,11 +13,178 @@
 
 #ifdef LOCAL_SYSTEM
 #define DEBUG(x) cerr << #x << ": " << (x) << endl;
+#define DEBUGARR(a, n) cerr << #a << ": "; print_array(cerr, a, n); cerr << endl;
 #else
 #define DEBUG(x)
+#define DEBUGARR(a, n)
 #endif
 
 using namespace std;
+
+template<typename T> void print_sequential_container(ostream& stream, const vector<T>& c) {
+    stream << "[";
+    auto &last = *(--c.end());
+    for (auto &e: c) {
+        stream << e;
+        if (e != last) {
+            stream << ", ";
+        }
+    }
+    stream << "]";
+}
+
+template<typename T> void print_array(ostream& stream, T a[], int n) {
+    stream << "[";
+    for (int i = 0; i < n; i++) {
+        stream << a[i];
+        if (i != n - 1) {
+            stream << ", ";
+        }
+    }
+    stream << "]";
+}
+
+template<typename T> void print_set(ostream& stream, const T& c) {
+    stream << "{";
+    auto &last = *(--c.end());
+    for (auto &e: c) {
+        stream << e;
+        if (e != last) {
+            stream << ", ";
+        }
+    }
+    stream << "}";
+}
+
+template<typename T> void print_map(ostream& stream, const T& c) {
+    stream << "{";
+    auto &last = *(--c.end());
+    for (auto &e: c) {
+        stream << e.fi << ": " << e.se;
+        if (e != last) {
+            stream << ", ";
+        }
+    }
+    stream << "}";
+}
+
+template<typename T> ostream& operator << (ostream& stream, const vector<T>& c) {
+    print_sequential_container(stream, c);
+    return stream;
+}
+
+template<typename T> ostream& operator << (ostream& stream, const list<T>& c) {
+    print_sequential_container(stream, c);
+    return stream;
+}
+
+template<typename T> ostream& operator << (ostream& stream, const forward_list<T>& c) {
+    print_sequential_container(stream, c);
+    return stream;
+}
+
+template<typename T, size_t N> ostream& operator << (ostream& stream, const array<T, N>& c) {
+    print_sequential_container(stream, c);
+    return stream;
+}
+
+template<typename T> ostream& operator << (ostream& stream, const deque<T>& c) {
+    print_sequential_container(stream, c);
+    return stream;
+}
+
+template<typename T> ostream& operator << (ostream& stream, const stack<T>& c) {
+    vector<T> v;
+    while (not c.empty()) {
+        v.pb(c.top());
+        c.pop();
+    }
+    for (int i = ((int)v.size()) - 1; i >= 0; i--) {
+        c.push(v[i]);
+    }
+    print_sequential_container(stream, v);
+    return stream;
+}
+
+template<typename T> ostream& operator << (ostream& stream, const queue<T>& c) {
+    vector<T> v;
+    while (not c.empty()) {
+        v.pb(c.front());
+        c.pop();
+    }
+    for (T e: v) {
+        c.push(e);
+    }
+    print_sequential_container(stream, v);
+    return stream;
+}
+
+template<typename T> ostream& operator << (ostream& stream, const priority_queue<T>& c) {
+    vector<T> v;
+    while (not c.empty()) {
+        v.pb(c.top());
+        c.pop();
+    }
+    for (T e: v) {
+        c.push(e);
+    }
+    print_sequential_container(stream, v);
+    return stream;
+}
+
+template<typename T> ostream& operator << (ostream& stream, const set<T>& c) {
+    print_set(stream, c);
+    return stream;
+}
+
+template<typename T> ostream& operator << (ostream& stream, const unordered_set<T>& c) {
+    print_set(stream, c);
+    return stream;
+}
+
+template<typename T1, typename T2> ostream& operator << (ostream& stream, const map<T1, T2>& c) {
+    print_map(stream, c);
+    return stream;
+}
+
+template<typename T1, typename T2> ostream& operator << (ostream& stream, const unordered_map<T1, T2>& c) {
+    print_map(stream, c);
+    return stream;
+}
+
+template<typename T1, typename T2> ostream& operator << (ostream& stream, const pair<T1, T2>& p) {
+    stream << "(" << p.fi << ", " << p.se << ")";
+    return stream;
+}
+
+template<typename T>
+size_t make_hash(const T& v) {
+    return std::hash<T>()(v);
+}
+
+size_t hash_combine(const size_t& h, const size_t& v) {
+    return h ^ (v + 0x9e3779b9 + (h << 6) + (h >> 2));
+}
+
+template <typename T1, typename T2>
+struct hash<pair<T1, T2>> {
+public:
+    size_t operator()(const pair<T1, T2>& p) const {
+        return hash_combine(make_hash(p.fi), make_hash(p.se));
+    }
+};
+
+template<typename T>
+struct hash_container
+{
+    size_t operator()(const T& c) const {
+        size_t h = 0;
+        for(const auto& e: c) {
+            h = hash_combine(h, make_hash(e));
+        }
+        return h;
+    }
+};
 
 typedef pair<int, int> pii;
 typedef vector<int> vi;
@@ -30,8 +197,8 @@ typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
 typedef double ld;
 
-template<class T> bool amin(T &a, T b) { return a > b ? (a = b, true) : false; }
-template<class T> bool amax(T &a, T b) { return a < b ? (a = b, true) : false; }
+template<typename T> bool amin(T &a, T b) { return a > b ? (a = b, true) : false; }
+template<typename T> bool amax(T &a, T b) { return a < b ? (a = b, true) : false; }
 
 const int mod = 1000000007;
 const int inf = 1000000000;
