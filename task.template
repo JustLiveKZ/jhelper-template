@@ -1,3 +1,7 @@
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("unroll-loops")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
+#define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 #define mp make_pair
 #define mt make_tuple
@@ -142,12 +146,32 @@ template<typename T> ostream& operator << (ostream& stream, const unordered_set<
     return stream;
 }
 
+template<typename T> ostream& operator << (ostream& stream, const multiset<T>& c) {
+    print_set(stream, c);
+    return stream;
+}
+
+template<typename T> ostream& operator << (ostream& stream, const unordered_multiset<T>& c) {
+    print_set(stream, c);
+    return stream;
+}
+
 template<typename T1, typename T2> ostream& operator << (ostream& stream, const map<T1, T2>& c) {
     print_map(stream, c);
     return stream;
 }
 
 template<typename T1, typename T2> ostream& operator << (ostream& stream, const unordered_map<T1, T2>& c) {
+    print_map(stream, c);
+    return stream;
+}
+
+template<typename T1, typename T2> ostream& operator << (ostream& stream, const multimap<T1, T2>& c) {
+    print_map(stream, c);
+    return stream;
+}
+
+template<typename T1, typename T2> ostream& operator << (ostream& stream, const unordered_multimap<T1, T2>& c) {
     print_map(stream, c);
     return stream;
 }
@@ -166,12 +190,14 @@ size_t hash_combine(const size_t& h, const size_t& v) {
     return h ^ (v + 0x9e3779b9 + (h << 6) + (h >> 2));
 }
 
-template <typename T1, typename T2>
-struct hash<pair<T1, T2>> {
-public:
-    size_t operator()(const pair<T1, T2>& p) const {
-        return hash_combine(make_hash(p.fi), make_hash(p.se));
-    }
+namespace std {
+    template <typename T1, typename T2>
+    struct hash<pair<T1, T2>> {
+    public:
+        size_t operator()(const pair<T1, T2>& p) const {
+            return hash_combine(make_hash(p.fi), make_hash(p.se));
+        }
+    };
 };
 
 template<typename T>
@@ -192,6 +218,7 @@ typedef vector<pii> vpii;
 typedef vector<vi> vvi;
 typedef long long ll;
 typedef unsigned long long ull;
+typedef unsigned int uint;
 typedef vector<ll> vll;
 typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
@@ -203,6 +230,7 @@ template<typename T> bool amax(T &a, T b) { return a < b ? (a = b, true) : false
 const int mod = 1000000007;
 const int inf = 1000000000;
 const ll infll = (ll)inf * (ll)inf;
+const int maxn = 100000;
 
 class %ClassName% {
 public:
