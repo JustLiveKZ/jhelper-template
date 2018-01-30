@@ -26,12 +26,11 @@
 
 using namespace std;
 
-template<typename T> void print_sequential_container(ostream& stream, const vector<T>& c) {
+template<typename T> void print_sequential_container(ostream& stream, const T& c) {
     stream << "[";
-    auto &last = *(--c.end());
-    for (auto &e: c) {
-        stream << e;
-        if (e != last) {
+    for (auto it = c.begin(); it != c.end(); ++it) {
+        stream << *it;
+        if (it != --c.end()) {
             stream << ", ";
         }
     }
@@ -51,10 +50,9 @@ template<typename T> void print_array(ostream& stream, T a[], int n) {
 
 template<typename T> void print_set(ostream& stream, const T& c) {
     stream << "{";
-    auto &last = *(--c.end());
-    for (auto &e: c) {
-        stream << e;
-        if (e != last) {
+    for (auto it = c.begin(); it != c.end(); ++it) {
+        stream << *it;
+        if (it != --c.end()) {
             stream << ", ";
         }
     }
@@ -63,10 +61,9 @@ template<typename T> void print_set(ostream& stream, const T& c) {
 
 template<typename T> void print_map(ostream& stream, const T& c) {
     stream << "{";
-    auto &last = *(--c.end());
-    for (auto &e: c) {
-        stream << e.fi << ": " << e.se;
-        if (e != last) {
+    for (auto it = c.begin(); it != c.end(); ++it) {
+        stream << it->fi << ": " << it->se;
+        if (it != --c.end()) {
             stream << ", ";
         }
     }
