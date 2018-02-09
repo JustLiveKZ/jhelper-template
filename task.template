@@ -198,7 +198,7 @@ namespace std {
             return hash_combine(make_hash(p.fi), make_hash(p.se));
         }
     };
-};
+}
 
 template<typename T>
 struct hash_container
@@ -222,7 +222,7 @@ typedef unsigned int uint;
 typedef vector<ll> vll;
 typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
-typedef double ld;
+typedef long double ld;
 
 template<typename T> bool amin(T &a, T b) { return a > b ? (a = b, true) : false; }
 template<typename T> bool amax(T &a, T b) { return a < b ? (a = b, true) : false; }
