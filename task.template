@@ -227,8 +227,16 @@ typedef long double ld;
 template<typename T> bool amin(T &a, T b) { return a > b ? (a = b, true) : false; }
 template<typename T> bool amax(T &a, T b) { return a < b ? (a = b, true) : false; }
 
+auto seed() {
+    return chrono::duration_cast<chrono::nanoseconds>(chrono::high_resolution_clock::now().time_since_epoch()).count();
+}
+
+const vi some_primes = {1000000007, 1000000411, 1000001501, 1000001927, 1000002637,
+                        1000003163, 1000003651, 1000003769, 1000003931, 1000004099};
 const int mod = 1000000007;
 const int inf = 1000000000;
+const double eps = 1e-9;
+const double pi = atan2(-1, 0);
 const ll infll = (ll)inf * (ll)inf;
 const int maxn = 100000;
 
